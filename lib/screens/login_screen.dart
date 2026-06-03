@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../main.dart'; 
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,101 +8,145 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  bool _obscureText = true; // Untuk menyembunyikan/menampilkan password
+  final TextEditingController _nisController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  void _handleLogin() {
-    String inputUser = _usernameController.text.trim().toLowerCase();
-
-    if (_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-      String role = 'OSIS'; // Peran bawaan
-      
-      if (inputUser.contains('guru')) {
-        role = 'Guru';
-      } else if (inputUser.contains('mpk')) {
-        role = 'MPK';
-      }
-
-      // Di sini perbaikannya, sekarang sudah mengirimkan data 'role' ke MainNavigation
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainNavigation(role: role)),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username dan Password tidak boleh kosong!')),
-      );
-    }
+  void _login() {
+    // Ketika tombol MASUK KE PORTAL diklik, langsung arahkan ke Dashboard
+    Navigator.pushReplacementNamed(context, '/dashboard');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 40.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 60),
+              // Judul Aplikasi Atas
               const Center(
                 child: Text(
-                  'KR4BAT GO',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A237E)),
+                  "KR4BAT GO",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E2856), // Warna biru gelap sesuai tema
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 60),
+              // Teks Selamat Datang
+              const Text(
+                "Selamat Datang,",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E2856),
+                ),
+              ),
+              const Text(
+                "Sobat KR4BAT!",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E2856),
                 ),
               ),
               const SizedBox(height: 40),
-              const Text(
-                'Selamat Datang,\nSobat KR4BAT!',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF1A237E)),
-              ),
-              const SizedBox(height: 32),
+
+              // Input NIS / Email Sekolah
               TextField(
-                controller: _usernameController,
+                controller: _nisController,
                 decoration: InputDecoration(
-                  hintText: 'NIS / Email Sekolah',
-                  prefixIcon: const Icon(Icons.account_circle_outlined),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                  hintText: "NIS / Email Sekolah",
+                  hintStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                  prefixIcon: Icon(Icons.account_circle_outlined, color: Colors.grey.shade700),
                   filled: true,
-                  fillColor: Colors.grey.shade100,
+                  fillColor: const Color(0xFFF5F5F5),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: const BorderSide(color: Color(0xFF1E2856), width: 1.5),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
+
+              // Input Kata Sandi
               TextField(
                 controller: _passwordController,
-                obscureText: _obscurePassword,
+                obscureText: _obscureText,
                 decoration: InputDecoration(
-                  hintText: 'Kata Sandi',
-                  prefixIcon: const Icon(Icons.lock_outline),
+                  hintText: "Kata Sandi",
+                  hintStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                  prefixIcon: Icon(Icons.lock_outline, color: Colors.grey.shade700),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword 
-                          ? Icons.visibility_off_outlined 
-                          : Icons.visibility_outlined,
+                      _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      color: Colors.grey.shade700,
                     ),
                     onPressed: () {
                       setState(() {
-                        _obscurePassword = !_obscurePassword;
+                        _obscureText = !_obscureText;
                       });
                     },
                   ),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
                   filled: true,
-                  fillColor: Colors.grey.shade100,
+                  fillColor: const Color(0xFFF5F5F5),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: const BorderSide(color: Color(0xFF1E2856), width: 1.5),
+                  ),
                 ),
               ),
               const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: _handleLogin,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1A237E),
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+
+              // Tombol MASUK KE PORTAL
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1E2856), // Biru gelap persis foto
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    elevation: 0,
+                  ),
+                  onPressed: _login,
+                  child: const Text(
+                    "MASUK KE PORTAL",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
                 ),
-                child: const Text('MASUK KE PORTAL', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ],
           ),
